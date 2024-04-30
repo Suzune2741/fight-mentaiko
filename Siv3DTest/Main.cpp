@@ -1,5 +1,6 @@
 ﻿# include <Siv3D.hpp>
 #define BALL 10
+#define PLAYER_SIZE 60
 
 namespace {
 	class Balls
@@ -71,7 +72,9 @@ namespace {
 void Main()
 {
 	Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
+	Window::Resize(1000, 600);
 	const Font font{ FontMethod::MSDF, 48, Typeface::Bold };
+	const Font Pointfont{ FontMethod::MSDF, 24, Typeface::Bold };
 	constexpr Point Offset{ 80, 60 };
 	Balls balls[BALL];
 	double gravity = 2.0;
@@ -84,12 +87,17 @@ void Main()
 		ClearPrint();
 		x = Cursor::Pos().x;
 		y = Cursor::Pos().y;
-		if (Cursor::Pos().x <= 0)
-			player.resized(60).drawAt(0, 500);
-		else if (800 <= Cursor::Pos().x)
-			player.resized(60).drawAt(800, 500);
-		else
+		if (Cursor::Pos().x <= 30) {
+			x = 30;
+			player.resized(60).drawAt(30, 500);
+		}
+		else if (770 <= Cursor::Pos().x) {
+			x = 770;
+			player.resized(60).drawAt(770, 500);
+		}
+		else {
 			player.resized(60).drawAt(x, 500);
+		}
 		for (int i = 0; i < BALL; i++)
 		{
 			if (balls[i].is_falling) {
@@ -106,10 +114,18 @@ void Main()
 			{
 				if (balls[i].color[0] == 0)
 					point += 1;
+				if (balls[i].color[0] == 1)
+					point -= 1;
+				if (balls[i].color[0] == 2)
+					point -= 2;
 				balls[i].Reset();
 			}
 			if (600 <= balls[i].y) balls[i].Reset();
 		}
-		Print << point;
+		Rect{ 804,0,1000,600 }.draw(Palette::Pink);
+		RoundRect{ 810,30,100,90,10 }.draw(HSV{ 160.0, 1.0, 1.0 });
+		Pointfont(U"単位").draw(815,30);
+		font(point).draw(820, 60);
+
 	}
 }
