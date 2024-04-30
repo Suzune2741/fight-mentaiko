@@ -82,6 +82,7 @@ void Main()
 	const Texture player{ Player };
 	int x,y;
 	int point = 0;
+	Stopwatch stopwatch{ StartImmediately::Yes };
 	while (System::Update())
 	{
 		ClearPrint();
@@ -126,6 +127,7 @@ void Main()
 		RoundRect{ 810,30,100,90,10 }.draw(HSV{ 160.0, 1.0, 1.0 });
 		Pointfont(U"単位").draw(815,30);
 		font(point).draw(820, 60);
-
+		Triangle{ 1000,0,960,0,1000,40 }.draw(Palette::Seagreen);
+		Pointfont(stopwatch).draw();
 	}
 }
